@@ -32,6 +32,7 @@ interface APODResponse {
     const newWidget = async () => {
       // Create a blank content widget inside of a MainAreaWidget
       const content = new Widget();
+      content.addClass('my-apodWidget');
       const widget = new MainAreaWidget({ content });
       widget.id = 'apod-jupyterlab';
       widget.title.label = 'Astronomy Picture';
@@ -39,6 +40,9 @@ interface APODResponse {
       // Add an image element to the content
       let img = document.createElement('img');
       content.node.appendChild(img);
+
+      let summary = document.createElement('p');
+      content.node.appendChild(summary);
 
       // Get a random date string in YYYY-MM-DD format
       function randomDate() {
@@ -50,6 +54,7 @@ interface APODResponse {
 
       // Fetch info about a random picture
       const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${randomDate()}`);
+      
       const data = await response.json() as APODResponse;
 
       if (data.media_type === 'image') {
